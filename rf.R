@@ -58,6 +58,6 @@ rf_preds <- predict(rf_final_wf,
                     new_data=test,
                     type="class")
 
-rf_submit <- as.data.frame(cbind(test$id, as.character(rf_preds$.pred_class)))
+rf_submit <- as.data.frame(cbind(test$ID, as.character(rf_preds$.pred_class)))
 colnames(rf_submit) <- c("id", "type")
 write_csv(rf_submit, "rf_submit.csv")

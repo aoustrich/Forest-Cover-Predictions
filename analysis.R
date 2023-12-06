@@ -36,7 +36,7 @@ predict_export <- function(workflowName, fileName){
                       new_data=test,
                       type="class")
   
-  output <- as.data.frame(cbind(test$id, as.character(x$.pred_class)))
+  output <- as.data.frame(cbind(test$Id, as.character(x$.pred_class)))
   colnames(output) <- c("Id", "type")
   
   path <- paste0("/submissions/",fileName,".csv")
@@ -88,7 +88,7 @@ RF_Final_wf <- RFworkflow %>%
   # fit(data=s.train)
 
 proc.time()-start
-stopCluster(cl)
+stopCluster(cluster)
 
 predict_export(RF_Final_wf, "RF1")
 
