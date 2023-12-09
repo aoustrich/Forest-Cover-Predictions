@@ -68,6 +68,8 @@ myRecipe <- recipe(Cover_Type ~ ., data = train) %>%
 
 baked <- bake(myRecipe, new_data = train)
 
+
+
 # Random Forest -----------------------------------------------------------
 RFmodel <- rand_forest(mtry = tune(),
                       min_n=tune(),
@@ -120,50 +122,50 @@ predict_export(RF_Final_wf, "RF1")
 
 # Naive Bayes -------------------------------------------------------------
 # 
-#   #   model
-#   naiveModel <- naive_Bayes(Laplace=tune(), smoothness=tune()) %>% 
-#     set_mode("classification") %>% 
-#     # set_engine("klaR")
-#     set_engine("naivebayes")
-#   
-#   #   workflow
-#   naiveWF <- workflow() %>% 
-#     # add_recipe(hauntedRecipeNoID) %>% 	##### switch recipe to klaR_recipe 
-#     add_recipe(myRecipe) %>%
-#     add_model(naiveModel)
-#   
-#   
-#   
-#   #   tuning
-#   naiveGrid <- grid_regular(Laplace(),
-#                             smoothness(),
-#                             levels = 5)
-#   
-#   #   folds for cross validation
-#   naiveFolds <- vfold_cv(train, v=5, repeats=1)
-#   
-#   cl <- makePSOCKcluster(3)
-#   doParallel::registerDoParallel(cl)
-#   
-#   #   fit model with cross validation
-#   naiveResultsCV <- naiveWF %>% 
-#     tune_grid(resamples=naiveFolds,
-#               grid=naiveGrid,
-#               metric_set("accuracy"))
-#   
-#   #   find best tune
-#   naiveBestTune <- naiveResultsCV %>%
-#     select_best("accuracy")
-#   
-#   #   finalize the Workflow & fit it
-#   naiveFinalWF <-
-#     naiveWF %>%
-#     finalize_workflow(naiveBestTune) %>%
-#     fit(data=train)
-#   
-#   #   predict and export
-#   outputCSV <-  predict_export(naiveFinalWF,"naiveBayes_klaR")
-#   stopCluster(cl)
+  #   model
+  naiveModel <- naive_Bayes(Laplace=tune(), smoothness=tune()) %>%
+    set_mode("classification") %>%
+    # set_engine("klaR")
+    set_engine("naivebayes")
+
+  #   workflow
+  naiveWF <- workflow() %>%
+    # add_recipe(hauntedRecipeNoID) %>% 	##### switch recipe to klaR_recipe
+    add_recipe(myRecipe) %>%
+    add_model(naiveModel)
+
+
+
+  #   tuning
+  naiveGrid <- grid_regular(Laplace(),
+                            smoothness(),
+                            levels = 5)
+
+  #   folds for cross validation
+  naiveFolds <- vfold_cv(train, v=5, repeats=1)
+
+  cl <- makePSOCKcluster(3)
+  doParallel::registerDoParallel(cl)
+
+  #   fit model with cross validation
+  naiveResultsCV <- naiveWF %>%
+    tune_grid(resamples=naiveFolds,
+              grid=naiveGrid,
+              metric_set("accuracy"))
+
+  #   find best tune
+  naiveBestTune <- naiveResultsCV %>%
+    select_best("accuracy")
+
+  #   finalize the Workflow & fit it
+  naiveFinalWF <-
+    naiveWF %>%
+    finalize_workflow(naiveBestTune) %>%
+    fit(data=train)
+
+  #   predict and export
+  outputCSV <-  predict_export(naiveFinalWF,"naiveBayes_klaR")
+  stopCluster(cl)
 # 
 # 
 #   

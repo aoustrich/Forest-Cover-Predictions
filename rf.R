@@ -72,4 +72,4 @@ proc.time() - startPred
 output <- as.data.frame(cbind(as.integer(test$Id), as.character(preds$.pred_class)))
 colnames(output) <- c("Id", "Cover_Type")
 
-vroom_write(output, file="submissions/rf2.csv",delim=',')
+vroom_write(output, file="submissions/boosted10.csv",delim=',')
